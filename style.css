@@ -1,110 +1,441 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* General Styling */
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 :root {
-    --pink: #f14e95;
-    --bg: #0a0a0a;
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    --primary-color: #A0522D; /* Example: Sienna */
+    --secondary-color: #F5DEB3; /* Example: Wheat */
+    --text-color: #333;
+    --light-text-color: #666;
+    --background-color: #F8F8F8;
+    --white-color: #FFFFFF;
+    --button-bg: #8B4513; /* Example: SaddleBrown */
+    --button-hover-bg: #CD853F; /* Example: Peru */
 }
 
 body {
-    font-size: 1.2rem;
-    font-family: "Work Sans", serif;
-    font-weight: 600;
-    min-height: 4000px;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll for the body */
+    /* overflow-y is now controlled by body:not(.invitation-open) and body.invitation-open */
+
+    /* PERBAIKAN UTAMA: Paksa body menjadi ukuran mobile dan pusatkan */
+    max-width: 480px; /* Lebar umum untuk tampilan ponsel. Sesuaikan jika perlu (misal: 400px atau 500px) */
+    margin: 0 auto; /* Pusatkan body di layar yang lebih lebar */
+    min-height: 100vh; /* Pastikan body minimal setinggi viewport untuk tampilan awal */
+    position: relative; /* Penting untuk positioning anak-anaknya */
+    width: 100%; /* Akan mengisi 100% dari max-width (pada layar besar) atau 100% layar HP */
+    height: 100%; /* Pastikan body mengambil 100% tinggi viewport untuk initial scroll */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Tambahkan shadow ke body agar terlihat seperti "kotak" HP di desktop */
 }
 
-.hero::before {
+/* Hide scrollbar initially */
+body:not(.invitation-open) {
+    overflow-y: hidden; /* Sembunyikan scrollbar vertikal di awal */
+}
+
+/* Show scrollbar after invitation is open */
+body.invitation-open {
+    overflow-y: auto; /* Aktifkan scrollbar vertikal setelah dibuka */
+}
+
+/* .container - ini tidak lagi relevan jika body sudah dibatasi dan punya shadow */
+.container {
+    /* max-width: 900px; */ 
+    /* margin: 0 auto; */
+    /* padding: 20px; */
+}
+
+/* Header/Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%; /* Akan mengisi 100% lebar body */
+    height: 100vh; /* Full viewport height */
+    background: url('img/nenogaleh.jpg') center center / cover no-repeat;
+    background-size: cover; /* Pastikan gambar mengisi penuh */
+    background-position: center; /* Pastikan gambar di tengah */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white-color);
+    padding: 20px;
+    box-sizing: border-box;
+    /* Transition for disappearing */
+    transition: opacity 1s ease-out, height 1s ease-out, visibility 1s linear 1s;
+}
+
+.hero-section::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(img/nenogaleh.jpg);
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    /* filter: grayscale(); */
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Overlay for readability */
+    z-index: 1;
 }
 
-.hero {
+.hero-content {
     position: relative;
-    min-height: 100vh;
+    z-index: 2;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.hero h1, .hero h4, .hero p {
-    text-shadow: var(--shadow);
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 5px;
 }
 
-.hero h1 {
-    font-family: "Sacramento", cursive;
-    font-size: 6rem;
-}
-
-.hero h4 {
-    font-size: 1.6rem;
-    font-weight: bold;
-    /* Text shadow lebih tebal dan jelas */
-    text-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.8),
-        0 0 5px rgba(0, 0, 0, 0.6);
-}
-
-.hero p {
-    font-size: 1.4rem;
-}
-
-.hero a {
-    color: var(--pink);
-    background-color: white;
-    box-shadow: var(--shadow);
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.hero a:hover {
-    background-color: var(--pink);
-    color: white;
-}
-
-.mynavbar {
-    /* Kosong, bisa ditambah nanti */
-}
-
-.mynavbar .navbar-brand, .mynavbar .offcanvas-title {
+.hero-content h1 {
     font-family: 'Sacramento', cursive;
-    font-size: 3.2rem;
+    font-size: 4em;
+    margin: 10px 0;
+    line-height: 1.1;
 }
 
-.mynavbar .nav-link {
-    text-transform: uppercase;
+.hero-content .date-hero {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 15px;
 }
 
-/* Media Query */
-/* Laptop */
-@media (max-width: 992px) {
-    html {
-        font-size: 75%;
-    }
+.btn-open-invitation {
+    display: inline-block;
+    background-color: var(--button-bg);
+    color: var(--white-color);
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
 }
 
-/* Tablet */
+.btn-open-invitation:hover {
+    background-color: var(--button-hover-bg);
+}
+
+/* Main Content Styling */
+.main-content {
+    background-color: var(--white-color);
+    /* PERBAIKAN: Hapus box-shadow dari sini, sudah ada di body sekarang */
+    /* box-shadow: 0 0 15px rgba(0,0,0,0.1); */ 
+    
+    /* Initial positioning: absolutely positioned, below the viewport */
+    position: absolute; 
+    top: 100vh; /* Start 100% below the viewport */
+    /* Gunakan left dan width sederhana, karena parent (body) sudah di tengah */
+    left: 0; 
+    width: 100%; 
+    max-width: 100%; /* Batasi agar tidak melebihi 100% dari body */
+    transform: none; /* Pastikan tidak ada transform yang tersisa */
+    
+    border-radius: 0; /* PERBAIKAN: Hapus border-radius dari sini, sudah ada di body atau tidak perlu */
+    text-align: center;
+    
+    /* Transition for appearing */
+    transition: top 1s ease-out, opacity 1s ease-out;
+    opacity: 0; /* Start invisible */
+    z-index: 3; /* Ensure it's above the hero-section */
+    box-sizing: border-box; /* Pastikan box-sizing diterapkan */
+    
+    /* PERBAIKAN: Hilangkan margin: auto dari sini saat absolute */
+}
+
+/* When invitation is open, make main content visible and reposition */
+body.invitation-open .main-content {
+    top: 0; /* Move to the very top of the viewport */
+    opacity: 1; /* Make visible */
+    position: relative; /* Change to relative to allow normal scrolling and layout flow */
+    transform: none; /* Pastikan transform direset */
+    
+    /* Centering dan lebar untuk relative position */
+    margin: 0 auto; /* Pusatkan secara horizontal */
+    width: 100%; /* Akan mengisi 100% lebar body (yang sudah max-width 480px) */
+    max-width: 100%; /* Pastikan tidak melebihi lebar body */
+    
+    /* Padding sudah diatur di section di dalamnya */
+    
+    border-radius: 0; 
+    min-height: 100vh; /* Ensure it takes at least full viewport height */
+}
+
+/* When invitation is open, hide hero section */
+body.invitation-open .hero-section {
+    opacity: 0;
+    pointer-events: none; /* Disable interaction */
+    visibility: hidden; /* Hide from screen readers */
+    height: 0; /* Collapse its height */
+    overflow: hidden; /* Hide any overflowing content */
+    transition: opacity 1s ease-out, height 1s ease-out, visibility 1s linear 1s; /* Smooth transition for disappearing */
+}
+
+
+section {
+    margin-bottom: 50px;
+    /* PERBAIKAN: Pindahkan padding dari main-content ke sini */
+    padding: 40px 20px; /* Default padding for sections */
+    border-bottom: 1px solid #eee;
+}
+
+/* Hapus padding-top dari section:first-of-type karena sudah di handle di .section */
+section:first-of-type {
+    /* padding-top: 40px; */ 
+}
+
+section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    font-family: 'Lora', serif;
+    margin-bottom: 15px;
+}
+
+.intro-section p {
+    margin-bottom: 10px;
+}
+
+.greeting {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.couple-names {
+    margin: 20px 0;
+}
+
+.couple-names h2 {
+    font-family: 'Sacramento', cursive;
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+.couple-names p {
+    color: var(--light-text-color);
+    font-size: 0.9em;
+}
+
+.couple-names a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.ampersand {
+    font-size: 3em;
+    color: var(--primary-color);
+    margin: -10px 0;
+    font-family: 'Sacramento', cursive;
+}
+
+.verse {
+    font-style: italic;
+    color: var(--light-text-color);
+    margin-top: 30px;
+    padding: 0 15px;
+}
+
+/* Event Section */
+.event-section .event-detail {
+    margin-bottom: 5px;
+}
+
+.event-section .event-address {
+    font-style: italic;
+    color: var(--light-text-color);
+    margin-top: 5px;
+}
+
+.btn-map, .btn-livestream {
+    display: inline-block;
+    background-color: var(--button-bg);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-map:hover, .btn-livestream:hover {
+    background-color: var(--button-hover-bg);
+}
+
+.livestream-info {
+    margin-top: 40px;
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Gift Section */
+.bank-details {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: inline-block; /* To make it wrap content */
+    text-align: left;
+}
+
+.bank-details p {
+    margin: 5px 0;
+}
+
+.bank-details span {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.btn-copy-rek {
+    background-color: var(--button-bg);
+    color: var(--white-color);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-copy-rek:hover {
+    background-color: var(--button-hover-bg);
+}
+
+/* RSVP / Wishes Section */
+#rsvp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+#rsvp-form input,
+#rsvp-form textarea,
+#rsvp-form select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%; /* Ensure it takes full width of its container */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+#rsvp-form textarea {
+    resize: vertical;
+}
+
+.btn-submit-rsvp {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit-rsvp:hover {
+    background-color: var(--button-hover-bg);
+}
+
+/* Footer */
+.footer {
+    padding: 30px 20px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    text-align: center;
+    border-radius: 0; /* Changed to 0 for full width/height appearance */
+    margin-top: 30px;
+}
+
+.footer .couple-names-footer {
+    font-family: 'Sacramento', cursive;
+    font-size: 2.5em;
+    margin: 10px 0;
+}
+
+.footer .credit p,
+.credit a {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+}
+
+.credit a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments - ini mungkin tidak lagi terlalu signifikan jika body sudah max-width */
 @media (max-width: 768px) {
-    html {
-        font-size: 65%;
+    .hero-content h1 {
+        font-size: 3em;
     }
-
-    .mynavbar .nav-link {
-        font-size: 2rem;
+    body.invitation-open .main-content {
+        top: 0; 
     }
-
-    .offcanvas-body .navbar-nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Pusatkan item navbar */
+    .couple-names h2 {
+        font-size: 2em;
+    }
+    .ampersand {
+        font-size: 2.5em;
+    }
+    section {
+        padding: 15px; /* Mungkin sesuaikan padding untuk mobile jika perlu */
     }
 }
 
-/* Mobile Phone */
-@media (max-width: 576px) {
-    html {
-        font-size: 60%;
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2.2em;
+    }
+    .hero-content .date-hero {
+        font-size: 1.2em;
+    }
+    .btn-open-invitation {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+    .main-content {
+        padding: 15px 10px; /* Reduced padding for smaller screens */
+    }
+    h2, h3 {
+        font-size: 1.5em;
+    }
+    .couple-names h2 {
+        font-size: 1.8em;
+    }
+    .ampersand {
+        font-size: 2em;
+    }
+    .btn-map, .btn-livestream, .btn-submit-rsvp {
+        font-size: 0.8em;
+        padding: 8px 15px;
     }
 }
